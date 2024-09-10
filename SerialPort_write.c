@@ -22,12 +22,12 @@
 // device port série à utiliser 
 //const char *portTTY = "/dev/ttyGS0"; 
 //const char *portTTY = "/dev/ttyS0";
-//const char *portTTY = "/dev/ttyS1";
+const char *portTTY = "/dev/ttyS1";
 //const char *portTTY = "/dev/ttyS2";
 //const char *portTTY = "/dev/ttyS3";
 //const char *portTTY = "/dev/ttyS4";
 //const char *portTTY = "/dev/ttyS5";
-const char *portTTY = "/dev/ttyUSB0"; // ttyUSB0 is the FT232 based USB2SERIAL Converter
+//const char *portTTY = "/dev/ttyUSB0"; // ttyUSB0 is the FT232 based USB2SERIAL Converter
 
 void main(void)
 	{
@@ -62,6 +62,7 @@ void main(void)
 
 	SerialPortSettings.c_iflag &= ~(IXON | IXOFF | IXANY);	// Disable XON/XOFF flow control both i/p and o/p
 
+	//SerialPortSettings.c_lflag |= ICANON;
 	SerialPortSettings.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);  // Non Cannonical mode, Disable echo, Disable signal  
 
 	SerialPortSettings.c_oflag &= ~OPOST;	//No Output Processing
@@ -70,7 +71,7 @@ void main(void)
 		printf("\n  Erreur! configuration des attributs du port serie");
 
 	// Write data to serial port 
-	char write_buffer[] = "ABCDE12345";	// Buffer containing characters to write into port
+	char write_buffer[] = "ABCDE12345\n";	// Buffer containing characters to write into port
 	int  bytes_written  = 0;  	// Value for storing the number of bytes written to the port 
 
 	bytes_written = write(fd, write_buffer, sizeof(write_buffer)); // use write() to send data to port 
@@ -79,7 +80,7 @@ void main(void)
 										// "sizeof(write_buffer)" - No of bytes to write 
 	printf("\n Ecriture de %d octets : %s ecrit sur le port %s", bytes_written, write_buffer, portTTY);
 	printf("\n");
-
+	
 	close(fd); // Close the Serial port 
 
 	}
